@@ -20,20 +20,13 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void saveEntry(User user) {
+    public Optional<User> saveEntry(User user) {
         try {
-            // Check if the username already exists
-            if (userRepository.findByUserName(user.getUserName()) != null) {
-                throw new IllegalArgumentException("Username already exists.");
-            }
-
-            // Save the user
             userRepository.save(user);
-        } catch (IllegalArgumentException e) {
-            throw e; // Re-throw to handle it in the controller
-        } catch (Exception e) {
-            log.error("Exception while saving user", e);
-            throw new RuntimeException("Failed to save the user.");
+            return Optional.of(user);
+        }catch (Exception e){
+            log.error("Exception ",e);
+            return Optional.empty();
         }
     }
 

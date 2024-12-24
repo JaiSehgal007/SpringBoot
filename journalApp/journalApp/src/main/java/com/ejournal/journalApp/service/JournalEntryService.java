@@ -1,6 +1,7 @@
 package com.ejournal.journalApp.service;
 
 import com.ejournal.journalApp.entity.JournalEntry;
+import com.ejournal.journalApp.entity.User;
 import com.ejournal.journalApp.repository.JournalEntryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -18,14 +19,30 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepository journalEntryRepository;
 
+    @Autowired
+    private UserService userService;
+
+    public void saveEntry(JournalEntry journalEntry, String userName) {
+        try {
+            User user = userService.findByUsername(userName);
+            journalEntry.setDate(LocalDateTime.now());
+            JournalEntry saved = journalEntryRepository.save(journalEntry);
+            user.getJournalEntries().add(saved);
+            userService.saveEntry(user);
+        }catch (Exception e){
+            log.error("Exception ",e);
+        }
+    }
+
     public void saveEntry(JournalEntry journalEntry) {
         try {
-            journalEntry.setDate(LocalDateTime.now());
             journalEntryRepository.save(journalEntry);
         }catch (Exception e){
             log.error("Exception ",e);
         }
     }
+
+
 
     public List<JournalEntry> getAll() {
         return journalEntryRepository.findAll();
@@ -35,7 +52,10 @@ public class JournalEntryService {
         return journalEntryRepository.findById(id);
     }
 
-    public void deleteById(ObjectId id) {
+    public void deleteById(ObjectId id,String userName) {
+        User user = userService.findByUsername(userName);
+        user.getJournalEntries().removeIf(journalEntry -> journalEntry.getId().equals(id));
+        userService.saveEntry(user);
         journalEntryRepository.deleteById(id);
     }
 }

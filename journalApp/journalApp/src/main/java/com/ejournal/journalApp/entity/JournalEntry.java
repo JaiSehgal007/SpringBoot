@@ -21,6 +21,7 @@ import java.util.Date;
 
 @Document(collection = "journal_entries") //we need to map this with a collection (table of database using this @Document)
 @Data //instead of all the above constructors use this
+@NoArgsConstructor //this is essential to use as @Data do not have No args constructor which is essential for deserialization i.e. from json to pojo conversion
 public class JournalEntry {
     @Id // to map this as a primary key
     private ObjectId id;

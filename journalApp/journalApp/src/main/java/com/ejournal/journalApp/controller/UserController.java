@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -24,13 +25,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user){
-        try {
-            userService.saveEntry(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
+        try{
+            Optional<User> dbUser = userService.saveEntry(user);
+            if(dbUser.isPresent()){
+                return new ResponseEntity<>(dbUser.get(), HttpStatus.CREATED);
+            }
+            else{
+                return new ResponseEntity<>("Username already exist", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
