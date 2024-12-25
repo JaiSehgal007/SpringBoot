@@ -1,16 +1,39 @@
 package com.ejournal.journalApp;
 
+import com.mongodb.client.MongoDatabase;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableTransactionManagement // this tells spring to find all the methods with transactional written on them, then for each method it makes a transactional context, i.e. all dbb operation in that methods are to be treated as one, thus we achieved atomicity. And it also helps achieve Isolation
 public class JournalApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(JournalApplication.class, args);
 	}
 
+	//in order to tell that MongoTransactionManager is the implementation of the platformTranactionManager
+	//we need to create a bean
+	//in this class we can create beans using methods
+	// MongoDatabaseFactory helps to make a connection with the Mongo Database
+	//Spring Automatically checks which Bean is implementing PTM
+	//you could give any name to this method
+	// this MongoDatabaseFactory will be passed by spring, it is a interface which is implemented by spring using the application configuration we specified
+	// and the implementation of this is known as  SimpleMongoClientDatabaseFactory
+	@Bean
+	public PlatformTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
+		return new MongoTransactionManager(dbFactory);
+	}
+	//	can be moving it to a separate package
 }
+
+
 
 /*
 * ORM -> object relational mapping, in this what happens is that, the class of the object-oriented language is mapped to the table in the database
