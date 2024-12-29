@@ -62,6 +62,7 @@ public class JournalApplication {
 /*
 * Lombok -> reduce boilerplate code (getter, setter, constructors, etc.)
 * lombok do this automatically at the time of compilation, we just need to make annotation
+<<<<<<< HEAD
 * */
 
 /*
@@ -76,4 +77,6 @@ public class JournalApplication {
 * if we have not created a user yet, spring gives us a username and password
 * we can also create them in application.properties
 * we can set this as spring.security.user.name and password
+=======
+>>>>>>> 21115a7eea25d9bd861de95062386e36620fafa4
 * */
