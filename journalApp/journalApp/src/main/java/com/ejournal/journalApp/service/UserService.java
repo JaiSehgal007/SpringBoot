@@ -37,10 +37,6 @@ public class UserService {
         }
     }
 
-    public void saveNewUser(User user) {
-
-    }
-
     public List<User> getAll() {
         return userRepository.findAll();
     }
