@@ -35,7 +35,7 @@ public class JournalEntryService {
             // we need to make sure if it is getting added in journal, then it gets added to a user also, or else nothing is done
             // to make sure this happens we make it as a transaction
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.saveUser(user);
         }catch (Exception e){
             log.error("Exception ",e);
             throw new RuntimeException("error occurred while saving entry");
@@ -61,15 +61,19 @@ public class JournalEntryService {
     }
 
     @Transactional
-    public void deleteById(ObjectId id,String userName) {
+    public boolean deleteById(ObjectId id,String userName) {
+        boolean removed = false;
         try{
             User user = userService.findByUsername(userName);
-            user.getJournalEntries().removeIf(journalEntry -> journalEntry.getId().equals(id));
-            userService.saveEntry(user);
-            journalEntryRepository.deleteById(id);
+            removed=user.getJournalEntries().removeIf(journalEntry -> journalEntry.getId().equals(id));
+            if(removed) {
+                userService.saveUser(user);
+                journalEntryRepository.deleteById(id);
+            }
         }catch (Exception e){
             log.error("Exception ",e);
             throw new RuntimeException("error occurred while deleting entry");
         }
+        return removed;
     }
 }

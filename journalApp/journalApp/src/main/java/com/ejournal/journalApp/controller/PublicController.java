@@ -1,7 +1,6 @@
 package com.ejournal.journalApp.controller;
 
 import com.ejournal.journalApp.entity.User;
-import com.ejournal.journalApp.repository.UserRepository;
 import com.ejournal.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class PublicController {
     @PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody User user){
         try{
-            Optional<User> dbUser = userService.saveEntry(user);
+            Optional<User> dbUser = userService.saveNewUser(user);
             if(dbUser.isPresent()){
                 return new ResponseEntity<>(dbUser.get(), HttpStatus.CREATED);
             }
