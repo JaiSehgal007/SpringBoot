@@ -78,5 +78,18 @@ public class JournalApplication {
 * we can also create them in application.properties
 * we can set this as spring.security.user.name and password
 =======
->>>>>>> 21115a7eea25d9bd861de95062386e36620fafa4
 * */
+
+/*
+* Class path: it is ia list of jars and directories which is used by jvm
+* jvm require byte code, this byte code is kept in the class path
+* so class path is way to tell jvm where to search for
+* so we get class files, jars and configuration files in class path
+*
+* so the path of src>main>resources is by default added in class path, so spring boot automatically finds application.properties file
+* but if we externalize this then we need to configure
+* we can also write our configurations in a yaml file
+* so it has a format applications.yaml
+* */
+
+
