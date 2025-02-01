@@ -15,11 +15,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest // this will ensure that Spring Application Context gets started, if we do not do that, then we cannot use autowired, as autowired gives us a bean
+@ActiveProfiles("dev") // this mean these tests will run only when active profile is dev
 public class UserServiceTest {
 
     @Autowired
