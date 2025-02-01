@@ -94,4 +94,16 @@ public class JournalApplication {
 * so it has a format applications.yaml
 * */
 
+/*
+* Logging frameworks in Spring boot
+*
+* Logback: flexible config and good performance
+* Log4j2: for asynchronous Logging
+* Java Util Logging: not much feature, but comes as a part of java platform, to upgrade this, we need to upgrade jdk as well
+*
+* now to use Logback we create a logback.xml file, in src/main/resources folder
+* logging levels: TRACE, DEBUG, INFO, WARN, ERROR
+* by default: logging is enabled for info, warn and error
+* */
+
 
